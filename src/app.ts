@@ -1,9 +1,10 @@
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
-import express, { NextFunction, Request, Response } from 'express';
+import express, {  NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import routes from './routes/routes';
+import HttpException from 'utils/http-exception';
 
 const app = express();
 
@@ -17,14 +18,15 @@ app.get('/', (req: Request, res: Response) => {
   res.json({ status: 'API is running on /api' });
 });
 
-// app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-
-//   if (err && err.errorCode) {
-//     res.status(err.errorCode).json(err.message);
-//   } else if (err) {
-//     res.status(500).json(err.message);
-//   }
-// });
+app.use((err: Error | HttpException, req: Request, res: Response, next: NextFunction) => {
+  // @ts-ignore
+  if (err && err.errorCode) {
+    // @ts-ignore
+    res.status(err.errorCode).json(err.message);
+  } else if (err) {
+    res.status(500).json(err.message);
+  }
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

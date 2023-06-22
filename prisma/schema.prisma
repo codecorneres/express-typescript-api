@@ -41,14 +41,12 @@ model Project {
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  owner_id    Int
+  owner_id    Int?
 
   // Relations
 
   users User_Project[]
-  owner User           @relation(fields: [userId], references: [id])
-
-  userId Int
+  owner User?          @relation(fields: [owner_id], references: [id], onDelete: SetNull, onUpdate: Cascade)
 }
 
 model Issue {
@@ -59,8 +57,8 @@ model Issue {
   estimate     Int
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  assigned_by  Int
-  assigned_to  Int
+  assigned_by  Int?
+  assigned_to  Int?
   status_id    Int
   project_id   Int
 

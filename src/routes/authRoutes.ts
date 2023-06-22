@@ -9,12 +9,13 @@ import session  from 'express-session';
 // import prisma from "../utils/prisma";
 // import generateToken  from "../utils/generateToken.utils";
 import { createUser, login } from "../services/auth.service";
+import auth from "../utils/auth";
 
 const authRouter = express.Router();
 
 authRouter.post("/signup", async (req: Request, res: Response, next: NextFunction) => {
      try {
-        const user = await createUser(req.body.user);
+        const user = await createUser(req.body);
         res.json({ user });
     } catch (error) {
         next(error);
@@ -23,34 +24,14 @@ authRouter.post("/signup", async (req: Request, res: Response, next: NextFunctio
 
 authRouter.post("/login", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const user = await login(req.body.user);
+        const user = await login(req.body);
         res.json({ user });
     } catch (error) {
         next(error);
     }
-    // const {email, password} = req.body;
-    // // validation
-    // const encryptedPassword = await bcrypt.hash(password, 10);
-    // const user = await prisma.user.findUnique({
-    //     where: {
-    //         email: email
-    //     }, include: {
-    //         role: true
-    //     }
-    // });
-    // if (!user) {
-    //     res.status(401).json({error: "Invalid email or password"});
-    // }
-    // if (encryptedPassword !== user?.password) {
-    //     res.status(401).json({error: "Invalid email or password"});
-    // }
-    // // generate token
-    // const token = user ? generateToken(user) : null;
-    // // send token
-    // res.json({token});
 });
 
-authRouter.post("/logout", async (req: Request, res: Response, next: NextFunction) => {
+authRouter.post("/logout", auth.required, async (req: Request, res: Response, next: NextFunction) => {
     if (req.session) {
         req.session.destroy(err => {
             if (err) {

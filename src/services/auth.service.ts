@@ -24,8 +24,8 @@ const checkUserUniqueness = async (email: string) => {
 export const createUser = async (input: any) => {
     const email = input.email.trim();
     const name = input.name.trim();
-    const password = input.password.trim();
-    const role = input.role.trim();
+    const password = input.password
+    const role_id = input.role_id
     
     if (!email) {
         throw new HttpException(422, { errors: { email: ["can't be blank"] } });
@@ -36,8 +36,8 @@ export const createUser = async (input: any) => {
     if (!password) {
         throw new HttpException(422, { errors: { password: ["can't be blank"] } });
     }
-    if (!role) {
-        throw new HttpException(422, { errors: { role: ["can't be blank"] } });
+    if (!role_id) {
+        throw new HttpException(422, { errors: { role_id: ["can't be blank"] } });
     }
 
     await checkUserUniqueness(email);
@@ -49,7 +49,7 @@ export const createUser = async (input: any) => {
             name,
             email,
             password: hashedPassword,
-            role
+            role_id
         },
         select: {
             email: true,
@@ -63,7 +63,7 @@ export const createUser = async (input: any) => {
 
 export const login = async (userPayload: any) => {
   const email = userPayload.email.trim();
-  const password = userPayload.password.trim();
+  const password = userPayload.password
 
   if (!email) {
     throw new HttpException(422, { errors: { email: ["can't be blank"] } });
