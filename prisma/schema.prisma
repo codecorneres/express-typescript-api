@@ -31,8 +31,14 @@ model User {
   role_id Int
   role    Role @relation(fields: [role_id], references: [id])
 
-  projects      User_Project[]
-  ownerProjects Project[]
+  projects        User_Project[]
+  ownerProjects   Project[]
+  Timesheet       Timesheet[]
+  Comments        Comment[]
+  Attachments     Attachment[]
+  issueAssignedBy Issue[]        @relation("assignedBy")
+  issueAssignedTo Issue[]        @relation("assignedTo")
+  lists           Lists[]
 }
 
 model Project {
@@ -44,30 +50,58 @@ model Project {
   owner_id    Int?
 
   // Relations
+  users       User_Project[]
+  owner       User?          @relation(fields: [owner_id], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  timesheets  Timesheet[]
+  comments    Comment[]
+  attachments Attachment[]
+  issues      Issue[]
+  lists       Lists[]
+}
 
-  users User_Project[]
-  owner User?          @relation(fields: [owner_id], references: [id], onDelete: SetNull, onUpdate: Cascade)
+model Lists {
+  id        Int      @id @default(autoincrement())
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user_id    Int?
+  user       User?    @relation(fields: [user_id], references: [id])
+  issue_id   Int?
+  issue      Issue?   @relation(fields: [issue_id], references: [id])
+  project_id Int?
+  project    Project? @relation(fields: [project_id], references: [id])
 }
 
 model Issue {
   id           Int      @id @default(autoincrement())
-  issue_number String   @unique
+  issue_number String?  @unique
   title        String
   description  String?
-  estimate     Int
+  estimate     Int?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   assigned_by  Int?
+  assigned     User?    @relation("assignedBy", fields: [assigned_by], references: [id], onDelete: SetNull, onUpdate: Cascade)
   assigned_to  Int?
-  status_id    Int
-  project_id   Int
+  assignee     User?    @relation("assignedTo", fields: [assigned_to], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  status_id    Int?
+  status       Status?  @relation(fields: [status_id], references: [id])
+  project_id   Int?
+  project      Project? @relation(fields: [project_id], references: [id])
 
   // Relations
+  Timesheet   Timesheet[]
+  Comments    Comment[]
+  Attachments Attachment[]
+  Lists       Lists[]
 }
 
 model Status {
-  id    Int    @id @default(autoincrement())
-  title String
+  id     Int     @id @default(autoincrement())
+  title  String
+  Issues Issue[]
 }
 
 model Attachment {
@@ -78,8 +112,11 @@ model Attachment {
 
   // Relations
   user_id    Int
+  user       User    @relation(fields: [user_id], references: [id])
   project_id Int
+  project    Project @relation(fields: [project_id], references: [id])
   issue_id   Int
+  issue      Issue   @relation(fields: [issue_id], references: [id])
 }
 
 model Comment {
@@ -90,8 +127,11 @@ model Comment {
 
   // Relations
   user_id    Int
+  user       User    @relation(fields: [user_id], references: [id])
   project_id Int
+  project    Project @relation(fields: [project_id], references: [id])
   issue_id   Int
+  issue      Issue   @relation(fields: [issue_id], references: [id])
 }
 
 model User_Project {
@@ -100,6 +140,7 @@ model User_Project {
   user       User    @relation(fields: [user_id], references: [id])
   project_id Int
   project    Project @relation(fields: [project_id], references: [id])
+  // @@unique([user_id, project_id])
 
   @@id([user_id, project_id])
 }
@@ -113,6 +154,9 @@ model Timesheet {
 
   // Relations
   user_id    Int
+  user       User    @relation(fields: [user_id], references: [id])
   project_id Int
+  project    Project @relation(fields: [project_id], references: [id])
   issue_id   Int
+  issue      Issue   @relation(fields: [issue_id], references: [id])
 }

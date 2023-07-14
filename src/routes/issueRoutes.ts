@@ -8,7 +8,7 @@ import {  getAllIssues, getIssueById, updateIssue, deleteIssue, createIssue } fr
 const issueRouter = express.Router();
 
 // Creting a Issue
-issueRouter.post('/issue', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+issueRouter.post('/issue', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const issue = await createIssue(req.body);
         res.json(issue);
@@ -17,9 +17,8 @@ issueRouter.post('/issue', auth.required, async (req: Request, res: Response, ne
     }
 });
 
-
 // Get all Issues
-issueRouter.get('/issues', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+issueRouter.get('/issues',  async (req: Request, res: Response, next: NextFunction) => {
     try {
         const issues = await getAllIssues();
         res.json(issues);
@@ -28,9 +27,8 @@ issueRouter.get('/issues', auth.required, async (req: Request, res: Response, ne
     }
 }); 
 
-
 // Get issue by id
-issueRouter.get('/issues/:id', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+issueRouter.get('/issues/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const issue = await getIssueById(Number(req.params.id));
         res.json(issue);
@@ -40,7 +38,7 @@ issueRouter.get('/issues/:id', auth.required, async (req: Request, res: Response
 });
 
 // Update issue by id
-issueRouter.put('/issues/:id', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+issueRouter.put('/issues/:id',  async (req: Request, res: Response, next: NextFunction) => {
     try {
         const issue = await updateIssue(Number(req.params.id), req.body);
         res.json(issue);
@@ -50,7 +48,7 @@ issueRouter.put('/issues/:id', auth.required, async (req: Request, res: Response
 });
 
 // Delete project by id
-issueRouter.delete('/issues/:id', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+issueRouter.delete('/issues/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const issue = await deleteIssue(Number(req.params.id));
         res.json(issue);

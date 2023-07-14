@@ -1,20 +1,32 @@
-//deactivate
-//login
-//signup
-//logout
-
 import express, { Request, Response, NextFunction } from "express";
 import session  from 'express-session';
-// import bcrypt from "bcryptjs";
-// import prisma from "../utils/prisma";
-// import generateToken  from "../utils/generateToken.utils";
-import { createUser, login } from "../services/auth.service";
+import { createUser, login, getAllUsers } from "../services/auth.service";
 import auth from "../utils/auth";
 
 const authRouter = express.Router();
 
+// Load user profile
+// authRouter.get("/me", auth.required, async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const user = await loadUserProfile(req.body);
+//         res.json({ user });
+//     } catch (error) {
+//         next(error);
+//     }
+// })
+
+// Get all users
+authRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const users = await getAllUsers();
+        res.json({ users });
+    } catch (error) {
+        next(error);
+    }
+})
+
 authRouter.post("/signup", async (req: Request, res: Response, next: NextFunction) => {
-     try {
+    try {
         const user = await createUser(req.body);
         res.json({ user });
     } catch (error) {

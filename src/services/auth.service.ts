@@ -21,9 +21,26 @@ const checkUserUniqueness = async (email: string) => {
   }
 };
 
+// Get all users
+export const getAllUsers = async () => {
+    const users = await prisma.user.findMany({
+        select: {
+            email: true,
+            name: true,
+            role: true,
+        },
+    });
+    if (!users) {
+        throw new HttpException(404, "Users not found");
+    }
+
+    return users;
+}
+
+// Create a new user
 export const createUser = async (input: any) => {
-    const email = input.email.trim();
-    const name = input.name.trim();
+    const email = input.email
+    const name = input.name
     const password = input.password
     const role_id = input.role_id
     
@@ -62,7 +79,7 @@ export const createUser = async (input: any) => {
 };
 
 export const login = async (userPayload: any) => {
-  const email = userPayload.email.trim();
+  const email = userPayload.email
   const password = userPayload.password
 
   if (!email) {

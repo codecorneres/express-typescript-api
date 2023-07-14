@@ -28,7 +28,7 @@ app.use((err: Error | HttpException, req: Request, res: Response, next: NextFunc
   }
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.info(`server up on port ${PORT}`);
 });

@@ -8,7 +8,7 @@ import {  getAllProjects, getProjectById, updateProjectById, deleteProjectById, 
 const projectRouter = express.Router();
 
 // Creting a project
-projectRouter.post('/project', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+projectRouter.post('/project', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const project = await createProject(req.body);
     res.json({project});
@@ -18,7 +18,7 @@ projectRouter.post('/project', auth.required, async (req: Request, res: Response
 });
 
 // Get all projects
-projectRouter.get('/projects', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+projectRouter.get('/projects', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const projects = await getAllProjects();
         res.json({projects});
@@ -28,7 +28,7 @@ projectRouter.get('/projects', auth.required, async (req: Request, res: Response
 });
 
 // Get project by id
-projectRouter.get('/projects/:id', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+projectRouter.get('/projects/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const project = await getProjectById(Number(req.params.id));
         res.json({project});
@@ -38,7 +38,7 @@ projectRouter.get('/projects/:id', auth.required, async (req: Request, res: Resp
 });
 
 // Update project by id
-projectRouter.put('/projects/:id', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+projectRouter.put('/projects/:id',  async (req: Request, res: Response, next: NextFunction) => {
     try {
         const project = await updateProjectById(Number(req.params.id), req.body);
         res.json({project});
@@ -48,7 +48,7 @@ projectRouter.put('/projects/:id', auth.required, async (req: Request, res: Resp
 });
 
 // Delete project by id
-projectRouter.delete('/projects/:id', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+projectRouter.delete('/projects/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const project = await deleteProjectById(Number(req.params.id));
         res.json({project});

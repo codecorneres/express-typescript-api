@@ -14,7 +14,7 @@ export const createProject = async (input: any) => {
       data: {
         title,
         description,
-        owner_id
+        owner_id,
       },
       include: {
         owner: true,
@@ -29,7 +29,8 @@ export const getAllProjects = async () => {
       select: {
         title: true,
         description: true,
-        owner_id: true
+        owner_id: true,
+        id: true
       }
     });
 
@@ -48,7 +49,8 @@ export const getProjectById = async (id: number) => {
       select: {
         title: true,
         description: true,
-        owner_id: true
+        owner_id: true,
+        id: true
       }
     });
 
@@ -71,7 +73,8 @@ export const updateProjectById = async (id: number, input: any) => {
       select: {
         title: true,
         description: true,
-        owner_id: true
+        owner_id: true,
+        id: true
       }
     });
 
@@ -89,7 +92,8 @@ export const deleteProjectById = async (id: number) => {
       select: {
         title: true,
         description: true,
-        owner_id: true
+        owner_id: true,
+        id: true
       }
     });
 

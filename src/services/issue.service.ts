@@ -3,38 +3,34 @@ import HttpException from '../utils/http-exception';
 
 export const createIssue = async (input: any) => {
     const title = input.title;
-    const description = input.description;
-    const project_id = input.project_id
-    const estimate = input.estimate
-    const issue_number = input.issue_number
-    const assigned_to = input.assigned_to
-    const assigned_by = input.assigned_by
-    const status_id = input.status_id
+    // const description = input.description;
+    // const project_id = input.project_id
+    // const estimate = input.estimate
+    // const issue_number = input.issue_number
+    // const assigned_to = input.assigned_to
+    // const assigned_by = input.assigned_by
+    // const status_id = input.status_id
 
-    const showError = [title, estimate, status_id, assigned_by, assigned_to, issue_number];
-    showError.forEach((item, index) => {
-        if (!item) {
-            throw new HttpException(422, { errors: { item: ["can't be blank"] } });
-        }
-    });
+    // const showError = [title, estimate, status_id, assigned_by, assigned_to, issue_number];
+    // showError.forEach((item, index) => {
+    //     if (!item) {
+    //         throw new HttpException(422, { errors: { item: ["can't be blank"] } });
+    //     }
+    // });
+    if (!title) {
+      throw new HttpException(422, { errors: { title: ["can't be blank"] } });
+    }
 
     const issue = await prisma.issue.create({
       data: {
         title,
-        description,
-        project_id,
-        estimate,
-        issue_number,
-        assigned_to,
-        assigned_by,
-        status_id
       },
       select: {
         title: true,
-        description: true,
-        project_id: true,
-        estimate: true,
-        issue_number: true
+        // description: true,
+        // project_id: true,
+        // estimate: true,
+        // issue_number: true
       }
     });
     return { ...issue };
@@ -47,7 +43,8 @@ export const getAllIssues = async () => {
         description: true,
         project_id: true,
         estimate: true,
-        issue_number: true
+        issue_number: true,
+        id: true
       }
     });
 
@@ -68,7 +65,8 @@ export const getIssueById = async (id: number) => {
         description: true,
         project_id: true,
         estimate: true,
-        issue_number: true
+        issue_number: true,
+        id: true
       }
     });
 
@@ -92,7 +90,8 @@ export const updateIssue = async (id: number, input: any) => {
         description: true,
         project_id: true,
         estimate: true,
-        issue_number: true
+        issue_number: true,
+        id: true
       }
     });
 
