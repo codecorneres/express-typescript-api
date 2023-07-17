@@ -8,7 +8,7 @@ import { getAllTimesheets, getTimesheetById, updateTimesheet, deleteTimesheet, c
 const timesheetRouter = express.Router();
 
 // Creating a timesheet
-timesheetRouter.post('/timesheet', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+timesheetRouter.post('/timesheet', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const timesheet = await createTimesheet(req.body);
         res.json(timesheet);
@@ -18,7 +18,7 @@ timesheetRouter.post('/timesheet', auth.required, async (req: Request, res: Resp
 });
 
 // Get all timesheets
-timesheetRouter.get('/timesheets', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+timesheetRouter.get('/timesheets', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const timesheets = await getAllTimesheets();
         res.json(timesheets);
@@ -28,7 +28,7 @@ timesheetRouter.get('/timesheets', auth.required, async (req: Request, res: Resp
 });
 
 // Get timesheet by id
-timesheetRouter.get('/timesheets/:id', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+timesheetRouter.get('/timesheets/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const timesheet = await getTimesheetById(Number(req.params.id));
         res.json(timesheet);
@@ -38,7 +38,7 @@ timesheetRouter.get('/timesheets/:id', auth.required, async (req: Request, res: 
 });
 
 // Update timesheet by id
-timesheetRouter.put('/timesheets/:id', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+timesheetRouter.put('/timesheets/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const timesheet = await updateTimesheet(Number(req.params.id), req.body);
         res.json(timesheet);
@@ -48,7 +48,7 @@ timesheetRouter.put('/timesheets/:id', auth.required, async (req: Request, res: 
 });
 
 // Delete timesheet by id
-timesheetRouter.delete('/timesheets/:id', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+timesheetRouter.delete('/timesheets/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const timesheet = await deleteTimesheet(Number(req.params.id));
         res.json(timesheet);

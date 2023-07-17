@@ -8,7 +8,7 @@ import {  getAllAttachments, getAttachmentById, updateAttachment, deleteAttachme
 const attachmentRouter = express.Router();
 
 // Creting a Attachment
-attachmentRouter.post('/attachment', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+attachmentRouter.post('/attachment', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const attachment = await createAttachment(req.body);
         res.json({attachment});
@@ -18,7 +18,7 @@ attachmentRouter.post('/attachment', auth.required, async (req: Request, res: Re
 });
 
 // Get all Attachments
-attachmentRouter.get('/attachments', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+attachmentRouter.get('/attachments', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const attachments = await getAllAttachments();
         res.json({attachments});
@@ -28,7 +28,7 @@ attachmentRouter.get('/attachments', auth.required, async (req: Request, res: Re
 });
 
 // Get attachment by id
-attachmentRouter.get('/attachments/:id', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+attachmentRouter.get('/attachments/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const attachment = await getAttachmentById(Number(req.params.id));
         res.json({attachment});
@@ -38,7 +38,7 @@ attachmentRouter.get('/attachments/:id', auth.required, async (req: Request, res
 });
 
 // Update attachment by id
-attachmentRouter.put('/attachments/:id', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+attachmentRouter.put('/attachments/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const attachment = await updateAttachment(Number(req.params.id), req.body);
         res.json({attachment});
@@ -48,7 +48,7 @@ attachmentRouter.put('/attachments/:id', auth.required, async (req: Request, res
 });
 
 // Delete attachment by id
-attachmentRouter.delete('/attachments/:id', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+attachmentRouter.delete('/attachments/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const attachment = await deleteAttachment(Number(req.params.id));
         res.json({attachment});

@@ -4,9 +4,8 @@ import HttpException from '../utils/http-exception';
 // creating a list
 export const createList = async (input: any) => {
     const title = input.title
-    // const issue_id = input.issue_id
-    // const project_id = input.project_id
-    // const user_id = input.user_id
+    const project_id = input.project_id
+    const user_id = input.user_id
 
     if (!title) {
         throw new HttpException(422, { errors: { title: ["can't be blank"] } });
@@ -15,15 +14,27 @@ export const createList = async (input: any) => {
       data: {
         title,
         // issue_id,
-        // project_id,
-        // user_id
+        project_id,
+        user_id
       },
       select: {
         title: true,
-        issue_id: true,
         project_id: true,
         user_id: true,
-        id: true
+        id: true,
+        issues: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            Comments: {
+              select: {
+                id: true,
+                body: true
+              },
+            },
+          }
+        }
       }
     })
     return list;
@@ -35,7 +46,21 @@ export const getAllLists = async () => {
       select: {
         title: true,
         project_id: true,
-        id: true
+        user_id: true,
+        id: true,
+        issues: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            Comments: {
+              select: {
+                id: true,
+                body: true
+              },
+            },
+          }
+        }
       }
     });
 
@@ -55,7 +80,21 @@ export const getListById = async (id: number) => {
       select: {
         title: true,
         project_id: true,
-        id: true
+        user_id: true,
+        id: true,
+        issues: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            Comments: {
+              select: {
+                id: true,
+                body: true
+              },
+            },
+          }
+        }
       }
     });
 
@@ -87,6 +126,7 @@ export const getListByProjectId = async (id: number) => {
 // update list by id
 export const updateListById = async (id: number, input: any) => {
     const title = input.title
+    const project_id = input.project_id
 
     const list = await prisma.lists.update({
       where: {
@@ -94,6 +134,7 @@ export const updateListById = async (id: number, input: any) => {
       },
       data: {
         title,
+        project_id,
       },
       select: {
         title: true,

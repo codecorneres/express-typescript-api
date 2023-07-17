@@ -68,8 +68,7 @@ model Lists {
   // Relations
   user_id    Int?
   user       User?    @relation(fields: [user_id], references: [id])
-  issue_id   Int?
-  issue      Issue?   @relation(fields: [issue_id], references: [id])
+  issues     Issue[]
   project_id Int?
   project    Project? @relation(fields: [project_id], references: [id])
 }
@@ -90,12 +89,13 @@ model Issue {
   status       Status?  @relation(fields: [status_id], references: [id])
   project_id   Int?
   project      Project? @relation(fields: [project_id], references: [id])
+  list_id      Int?
+  list         Lists?   @relation(fields: [list_id], references: [id])
 
   // Relations
   Timesheet   Timesheet[]
   Comments    Comment[]
   Attachments Attachment[]
-  Lists       Lists[]
 }
 
 model Status {

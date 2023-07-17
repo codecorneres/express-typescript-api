@@ -8,7 +8,7 @@ import {  getAllComments, getCommentById, updateComment, deleteComment, createCo
 const commentRouter = express.Router();
 
 // Creting a Comment
-commentRouter.post('/comment', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+commentRouter.post('/comment', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const comment = await createComment(req.body);
         res.json({comment});
@@ -18,7 +18,7 @@ commentRouter.post('/comment', auth.required, async (req: Request, res: Response
 });
 
 // Get all Comments
-commentRouter.get('/comments', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+commentRouter.get('/comments', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const comments = await getAllComments();
         res.json({comments});
@@ -28,7 +28,7 @@ commentRouter.get('/comments', auth.required, async (req: Request, res: Response
 });
 
 // Get comment by id
-commentRouter.get('/comments/:id', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+commentRouter.get('/comments/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const comment = await getCommentById(Number(req.params.id));
         res.json({comment});
@@ -38,7 +38,7 @@ commentRouter.get('/comments/:id', auth.required, async (req: Request, res: Resp
 })
 
 // Update comment by id
-commentRouter.put('/comments/:id', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+commentRouter.put('/comments/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const comment = await updateComment(Number(req.params.id), req.body);
         res.json({comment});
@@ -48,7 +48,7 @@ commentRouter.put('/comments/:id', auth.required, async (req: Request, res: Resp
 })
 
 // Delete comment by id
-commentRouter.delete('/comments/:id', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+commentRouter.delete('/comments/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const comment = await deleteComment(Number(req.params.id));
         res.json({comment});

@@ -5,16 +5,6 @@ import auth from "../utils/auth";
 
 const authRouter = express.Router();
 
-// Load user profile
-// authRouter.get("/me", auth.required, async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//         const user = await loadUserProfile(req.body);
-//         res.json({ user });
-//     } catch (error) {
-//         next(error);
-//     }
-// })
-
 // Get all users
 authRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -43,7 +33,7 @@ authRouter.post("/login", async (req: Request, res: Response, next: NextFunction
     }
 });
 
-authRouter.post("/logout", auth.required, async (req: Request, res: Response, next: NextFunction) => {
+authRouter.post("/logout", async (req: Request, res: Response, next: NextFunction) => {
     if (req.session) {
         req.session.destroy(err => {
             if (err) {

@@ -50,7 +50,33 @@ export const getProjectById = async (id: number) => {
         title: true,
         description: true,
         owner_id: true,
-        id: true
+        id: true,
+        users: {
+          select: {
+            user_id: true,
+            project_id: true,
+          }
+        },
+        lists: {
+          select: {
+            id: true,
+            title: true,
+            issues: {
+              select: {
+                id: true,
+                title: true,
+                description: true,
+                list_id: true,
+                Comments: {
+                  select: {
+                    id: true,
+                    body: true
+                  },
+                },
+              }
+            }
+          }
+        },
       }
     });
 

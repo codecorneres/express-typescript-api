@@ -8,7 +8,8 @@ import HttpException from 'utils/http-exception';
 
 const app = express();
 
-app.use(cors());
+// app.use(cors());
+app.use(cors({ exposedHeaders: 'Authorization' }));
 app.use(express.json());
 app.use('/api/v1', routes);
 app.use(express.static('public'));
