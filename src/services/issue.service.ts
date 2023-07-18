@@ -3,7 +3,7 @@ import HttpException from '../utils/http-exception';
 
 export const createIssue = async (input: any) => {
     const title = input.title;
-    // const description = input.description;
+    const description = input.description;
     const project_id = input.project_id
     const list_id = input.list_id
     // const estimate = input.estimate
@@ -26,13 +26,14 @@ export const createIssue = async (input: any) => {
       data: {
         title,
         project_id,
-        list_id
+        list_id,
+        description,
       },
       select: {
         title: true,
-        // description: true,
-        project_id: true,
-        list_id: true,
+        description: true,
+        // project_id: true,
+        // list_id: true,
         // estimate: true,
         // issue_number: true
       }
@@ -50,6 +51,15 @@ export const getAllIssues = async () => {
         issue_number: true,
         id: true, 
         list_id: true,
+        Comments: {
+          select: {
+            body: true,
+            user_id: true,
+            issue_id: true,
+            project_id: true,
+            id: true
+          }
+        }
       }
     });
 
@@ -73,6 +83,15 @@ export const getIssueById = async (id: number) => {
         issue_number: true,
         id: true,
         list_id: true,
+        Comments: {
+          select: {
+            body: true,
+            user_id: true,
+            issue_id: true,
+            project_id: true,
+            id: true
+          }
+        }
       }
     });
 
@@ -86,7 +105,7 @@ export const getIssueById = async (id: number) => {
 export const updateIssue = async (id: number, input: any) => {
     
     const title = input.title
-    // const description = input.description
+    const description = input.description
     const project_id = input.project_id
     // const estimate = input.estimate
     // const issue_number = input.issue_number
@@ -99,7 +118,8 @@ export const updateIssue = async (id: number, input: any) => {
       data: {
         title,
         project_id,
-        list_id
+        list_id,
+        description,
       },
       select: {
         title: true,
@@ -109,6 +129,15 @@ export const updateIssue = async (id: number, input: any) => {
         issue_number: true,
         id: true,
         list_id: true,
+        Comments: {
+          select: {
+            body: true,
+            user_id: true,
+            issue_id: true,
+            project_id: true,
+            id: true
+          }
+        }
       }
     });
 

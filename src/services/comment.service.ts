@@ -38,6 +38,10 @@ export const getAllComments = async () => {
     const comments = await prisma.comment.findMany({
         select: {
             body: true,
+            user_id: true,
+            issue_id: true,
+            project_id: true,
+            id: true
         },
     });
     if (!comments) {
@@ -54,6 +58,10 @@ export const getCommentById = async (id: number) => {
         },
         select: {
             body: true,
+            user_id: true,
+            issue_id: true,
+            project_id: true,
+            id: true
         },
     });
 
@@ -66,6 +74,9 @@ export const getCommentById = async (id: number) => {
 
 export const updateComment = async (id: number, input: any) => {
     const body = input.body;
+    const user_id = input.user_id
+    const issue_id = input.issue_id
+    const project_id = input.project_id
 
     if (!body) {
         throw new HttpException(422, { errors: { body: ["can't be blank"] } });
@@ -77,9 +88,15 @@ export const updateComment = async (id: number, input: any) => {
         },
         data: {
             body: body,
+            user_id: user_id,
+            issue_id: issue_id,
+            project_id: project_id,
         },
         select: {
             body: true,
+            user_id: user_id,
+            issue_id: issue_id,
+            project_id: project_id,
         },
     });
 

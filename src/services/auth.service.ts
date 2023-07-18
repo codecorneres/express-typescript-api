@@ -28,6 +28,7 @@ export const getAllUsers = async () => {
             email: true,
             name: true,
             role: true,
+            id: true
         },
     });
     if (!users) {
