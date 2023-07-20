@@ -126,12 +126,12 @@ model Comment {
   updatedAt DateTime @updatedAt
 
   // Relations
-  user_id    Int
-  user       User    @relation(fields: [user_id], references: [id])
-  project_id Int
-  project    Project @relation(fields: [project_id], references: [id])
-  issue_id   Int
-  issue      Issue   @relation(fields: [issue_id], references: [id])
+  user_id    Int?
+  user       User?    @relation(fields: [user_id], references: [id])
+  project_id Int?
+  project    Project? @relation(fields: [project_id], references: [id])
+  issue_id   Int?
+  issue      Issue?   @relation(fields: [issue_id], references: [id])
 }
 
 model User_Project {

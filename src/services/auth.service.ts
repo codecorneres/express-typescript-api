@@ -100,6 +100,7 @@ export const login = async (userPayload: any) => {
       name: true,
       password: true,
       role: true,
+      id: true
     },
   });
 
@@ -111,6 +112,7 @@ export const login = async (userPayload: any) => {
         name: user.name,
         role: user.role,
         token: generateToken(user),
+        id: user.id
       };
     }
   }

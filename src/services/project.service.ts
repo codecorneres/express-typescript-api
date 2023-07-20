@@ -2,22 +2,27 @@ import prisma from '../utils/prisma';
 import HttpException from '../utils/http-exception';
 
 export const createProject = async (input: any) => {
-    const title = input.title
-    const description = input.description
-    const owner_id = input.owner_id
+    const title = input.body.title
+    // const description = input.description
+    const owner_id = input.body.owner_id
+    // console.log(input, "the project input");
 
     if (!title) {
         throw new HttpException(422, { errors: { title: ["can't be blank"] } });
+    }
+    if (!owner_id) {
+        throw new HttpException(422, { errors: { owner_id: ["can't be blank"] } });
     }
 
     const project = await prisma.project.create({
       data: {
         title,
-        description,
+        // description,
         owner_id,
       },
       include: {
         owner: true,
+
       }
     });
 

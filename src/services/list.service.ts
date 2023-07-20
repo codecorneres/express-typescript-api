@@ -3,13 +3,20 @@ import HttpException from '../utils/http-exception';
 
 // creating a list
 export const createList = async (input: any) => {
-    const title = input.title
-    const project_id = input.project_id
-    const user_id = input.user_id
+    const title = input.listData.title
+    const project_id = input.listData.project_id
+    const user_id = input.listData.user_id
 
     if (!title) {
         throw new HttpException(422, { errors: { title: ["can't be blank"] } });
     }
+    if (!project_id) {
+        throw new HttpException(422, { errors: { project_id: ["can't be blank"] } });
+    }
+    if (!user_id) {
+        throw new HttpException(422, { errors: { user_id: ["can't be blank"] } });
+    }
+
     const list = await prisma.lists.create({
       data: {
         title,
@@ -127,6 +134,7 @@ export const getListByProjectId = async (id: number) => {
 export const updateListById = async (id: number, input: any) => {
     const title = input.title
     const project_id = input.project_id
+
 
     const list = await prisma.lists.update({
       where: {

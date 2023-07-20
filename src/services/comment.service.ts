@@ -2,10 +2,10 @@ import prisma from "../utils/prisma";
 import HttpException from "../utils/http-exception";
 
 export const createComment = async (input: any) => {
-    const body = input.body
-    const user_id = input.user_id
-    const issue_id = input.issue_id
-    const project_id = input.project_id
+    const body = input.commentData.body
+    // const user_id = input.user_id
+    const issue_id = input.commentData.issue_id
+    const project_id = input.commentData.project_id
 
     if (!body) {
         throw new HttpException(422, { errors: { body: ["can't be blank"] } });
@@ -16,16 +16,16 @@ export const createComment = async (input: any) => {
     if (!issue_id) {
         throw new HttpException(422, { errors: { issue_id: ["can't be blank"] } });
     }
-    if (!issue_id) {
-        throw new HttpException(422, { errors: { issue_id: ["can't be blank"] } });
-    }
+    // if (!issue_id) {
+    //     throw new HttpException(422, { errors: { issue_id: ["can't be blank"] } });
+    // }
 
     const comment = await prisma.comment.create({
         data: {
             body: body,
-            user_id: user_id,
+            // user_id: user_id,
             issue_id: issue_id,
-            project_id: project_id,
+            project_id: project_id
         },
         select: {
             body: true,
@@ -73,10 +73,11 @@ export const getCommentById = async (id: number) => {
 };
 
 export const updateComment = async (id: number, input: any) => {
-    const body = input.body;
-    const user_id = input.user_id
-    const issue_id = input.issue_id
-    const project_id = input.project_id
+    const body = input.commentData.body;
+    // const user_id = input.user_id
+    const issue_id = input.commentData.issue_id
+    const project_id = input.commentData.project_id
+    // console.log(input.commentData);
 
     if (!body) {
         throw new HttpException(422, { errors: { body: ["can't be blank"] } });
@@ -87,16 +88,16 @@ export const updateComment = async (id: number, input: any) => {
             id: Number(id),
         },
         data: {
-            body: body,
-            user_id: user_id,
-            issue_id: issue_id,
-            project_id: project_id,
+            body,
+            // user_id: user_id,
+            issue_id,
+            project_id,
         },
         select: {
             body: true,
-            user_id: user_id,
-            issue_id: issue_id,
-            project_id: project_id,
+            // user_id: true,
+            issue_id: true,
+            project_id: true,
         },
     });
 

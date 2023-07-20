@@ -2,10 +2,10 @@ import prisma from '../utils/prisma';
 import HttpException from '../utils/http-exception';
 
 export const createIssue = async (input: any) => {
-    const title = input.title;
-    const description = input.description;
-    const project_id = input.project_id
-    const list_id = input.list_id
+    const title = input.issueData.title;
+    const description = input.issueData.description;
+    const list_id = input.issueData.list_id
+    const project_id = input.issueData.project_id
     // const estimate = input.estimate
     // const issue_number = input.issue_number
     // const assigned_to = input.assigned_to
@@ -21,19 +21,22 @@ export const createIssue = async (input: any) => {
     if (!title) {
       throw new HttpException(422, { errors: { title: ["can't be blank"] } });
     }
+    if (!list_id) {
+      throw new HttpException(422, { errors: { list_id: ["can't be blank"] } });
+    }
 
     const issue = await prisma.issue.create({
       data: {
         title,
-        project_id,
         list_id,
         description,
+        project_id,
       },
       select: {
         title: true,
         description: true,
-        // project_id: true,
-        // list_id: true,
+        project_id: true,
+        list_id: true,
         // estimate: true,
         // issue_number: true
       }
