@@ -3,7 +3,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { Router } from 'express';
 import auth from '../utils/auth';
-import { getAllTimesheets, getTimesheetById, updateTimesheet, deleteTimesheet, createTimesheet } from '../services/timesheet.service';
+import { getAllTimesheetsForUser, getTimesheetById, updateTimesheet, deleteTimesheet, createTimesheet } from '../services/timesheet.service';
 
 const timesheetRouter = express.Router();
 
@@ -18,10 +18,14 @@ timesheetRouter.post('/timesheet', async (req: Request, res: Response, next: Nex
 });
 
 // Get all timesheets
-timesheetRouter.get('/timesheets', async (req: Request, res: Response, next: NextFunction) => {
+timesheetRouter.get('/timesheets/:id', async (req: Request, res: Response, next: NextFunction) => {
+    const id = Number(req.params.id)
     try {
-        const timesheets = await getAllTimesheets();
-        res.json(timesheets);
+        const timesheets = await getAllTimesheetsForUser();
+        const userTimesheets = timesheets.filter((timesheet, index) => {
+            return timesheet.user_id === id
+        })
+        res.json(userTimesheets);
     } catch (error) {
         next(error);
     }

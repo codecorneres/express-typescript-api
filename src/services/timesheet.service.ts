@@ -3,13 +3,25 @@ import HttpException from "../utils/http-exception";
 
 export const createTimesheet = async (input: any) => {
     const user_id = input.user_id
+    let startTime = input.startTime
+    let endTime = input.endTime
     const project_id = input.project_id
     const issue_id = input.issue_id
     const time_in_minutes = input.time_in_minutes
-    const description = input.description
+    startTime = new Date(startTime);
+    endTime = new Date(endTime)
+    // const description = input.description
+
+    console.log(user_id, startTime, "fgvtgb", endTime);
 
     if (!user_id) {
         throw new HttpException(422, { errors: { user_id: ["can't be blank"] } });
+    }
+    if (!startTime) {
+        throw new HttpException(422, { errors: { startTime: ["can't be blank"] } });
+    }
+    if (!endTime) {
+        throw new HttpException(422, { errors: { endTime: ["can't be blank"] } });
     }
     if (!project_id) {
         throw new HttpException(422, { errors: { project_id: ["can't be blank"] } });
@@ -27,21 +39,29 @@ export const createTimesheet = async (input: any) => {
             issue_id,
             user_id,
             time_in_minutes,
-            description
+            startTime,
+            endTime
         },
         select: {
-            description: true,
             time_in_minutes: true,
+            startTime: true,
+            endTime: true
         }
     });
     return { ...timesheet };
 };
 
-export const getAllTimesheets = async () => {
+export const getAllTimesheetsForUser = async () => {
     const timesheets = await prisma.timesheet.findMany({
         select: {
-            description: true,
+            // description: true,
             time_in_minutes: true,
+            startTime: true,
+            endTime: true,
+            user_id: true,
+            issue_id: true,
+            project_id: true,
+            id: true
         }
     });
     if (!timesheets) {

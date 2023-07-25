@@ -66,18 +66,47 @@ export const getProjectById = async (id: number) => {
           select: {
             id: true,
             title: true,
+            project_id: true,
+            user_id: true,
             issues: {
               select: {
                 id: true,
                 title: true,
                 description: true,
                 list_id: true,
+                project_id: true,
+                assigned_to: true,
+                assigned_by: true,
                 Comments: {
                   select: {
                     id: true,
-                    body: true
+                    body: true,
+                    user_id: true,
+                    issue_id: true,
+                    project_id: true,
                   },
                 },
+                Attachments: {
+                  select: {
+                    id: true,
+                    path: true,
+                    user_id: true,
+                    issue_id: true,
+                    project_id: true,
+                  }
+                },
+                Timesheets: {
+                  select: {
+                    id: true,
+                    user_id: true,
+                    issue_id: true,
+                    project_id: true,
+                    time_in_minutes: true,
+                    startTime: true,
+                    endTime: true,  
+                    description: true,
+                  }
+                }
               }
             }
           }

@@ -31,7 +31,7 @@ export const createComment = async (input: any) => {
             body: true,
         },
     });
-    return { ...comment };
+    return comment ;
 };
 
 export const getAllComments = async () => {

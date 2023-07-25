@@ -3,34 +3,30 @@ import HttpException from '../utils/http-exception';
 
 export const createIssue = async (input: any) => {
     const title = input.issueData.title;
-    const description = input.issueData.description;
     const list_id = input.issueData.list_id
     const project_id = input.issueData.project_id
+    const assigned_to = input.issueData.assigned_to
+    const assigned_by = input.issueData.assigned_by
+    // const description = input.issueData.description;
     // const estimate = input.estimate
     // const issue_number = input.issue_number
-    // const assigned_to = input.assigned_to
-    // const assigned_by = input.assigned_by
     // const status_id = input.status_id
 
-    // const showError = [title, estimate, status_id, assigned_by, assigned_to, issue_number];
-    // showError.forEach((item, index) => {
-    //     if (!item) {
-    //         throw new HttpException(422, { errors: { item: ["can't be blank"] } });
-    //     }
-    // });
-    if (!title) {
-      throw new HttpException(422, { errors: { title: ["can't be blank"] } });
-    }
-    if (!list_id) {
-      throw new HttpException(422, { errors: { list_id: ["can't be blank"] } });
-    }
+    const showError = [title, list_id, assigned_by, assigned_to, project_id];
+    showError.forEach((item, index) => {
+        if (!item) {
+            throw new HttpException(422, { errors: { item: ["can't be blank"] } });
+        }
+    });
 
     const issue = await prisma.issue.create({
       data: {
         title,
         list_id,
-        description,
+        // description,
         project_id,
+        assigned_by,
+        assigned_to
       },
       select: {
         title: true,
@@ -54,6 +50,8 @@ export const getAllIssues = async () => {
         issue_number: true,
         id: true, 
         list_id: true,
+        assigned_to: true,
+        assigned_by: true,
         Comments: {
           select: {
             body: true,
@@ -61,6 +59,27 @@ export const getAllIssues = async () => {
             issue_id: true,
             project_id: true,
             id: true
+          }
+        },
+        Attachments: {
+          select: {
+            id: true,
+            path: true,
+            user_id: true,
+            issue_id: true,
+            project_id: true,
+          }
+        },
+        Timesheets: {
+          select: {
+            id: true,
+            user_id: true,
+            issue_id: true,
+            project_id: true,
+            time_in_minutes: true,
+            startTime: true,
+            endTime: true,  
+            description: true,
           }
         }
       }
@@ -86,6 +105,8 @@ export const getIssueById = async (id: number) => {
         issue_number: true,
         id: true,
         list_id: true,
+        assigned_to: true,
+        assigned_by: true,
         Comments: {
           select: {
             body: true,
@@ -93,6 +114,27 @@ export const getIssueById = async (id: number) => {
             issue_id: true,
             project_id: true,
             id: true
+          }
+        },
+        Attachments: {
+          select: {
+            id: true,
+            path: true,
+            user_id: true,
+            issue_id: true,
+            project_id: true,
+          }
+        },
+        Timesheets: {
+          select: {
+            id: true,
+            user_id: true,
+            issue_id: true,
+            project_id: true,
+            time_in_minutes: true,
+            startTime: true,
+            endTime: true,  
+            description: true,
           }
         }
       }
@@ -110,9 +152,11 @@ export const updateIssue = async (id: number, input: any) => {
     const title = input.title
     const description = input.description
     const project_id = input.project_id
-    // const estimate = input.estimate
-    // const issue_number = input.issue_number
+    const assigned_to = input.assigned_to
+    const assigned_by = input.assigned_by
     const list_id = input.list_id
+        // const estimate = input.estimate
+    // const issue_number = input.issue_number
 
     const issue = await prisma.issue.update({
       where: {
@@ -123,6 +167,8 @@ export const updateIssue = async (id: number, input: any) => {
         project_id,
         list_id,
         description,
+        assigned_to,
+        assigned_by
       },
       select: {
         title: true,
@@ -132,6 +178,8 @@ export const updateIssue = async (id: number, input: any) => {
         issue_number: true,
         id: true,
         list_id: true,
+        assigned_to: true,
+        assigned_by: true,
         Comments: {
           select: {
             body: true,
@@ -139,6 +187,27 @@ export const updateIssue = async (id: number, input: any) => {
             issue_id: true,
             project_id: true,
             id: true
+          }
+        },
+        Attachments: {
+          select: {
+            id: true,
+            path: true,
+            user_id: true,
+            issue_id: true,
+            project_id: true,
+          }
+        },
+        Timesheets: {
+          select: {
+            id: true,
+            user_id: true,
+            issue_id: true,
+            project_id: true,
+            time_in_minutes: true,
+            startTime: true,
+            endTime: true,  
+            description: true,
           }
         }
       }
@@ -159,6 +228,7 @@ export const deleteIssue = async (id: number) => {
       select: {
         title: true,
         description: true,
+        project_id: true
       }
     });
 

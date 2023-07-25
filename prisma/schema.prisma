@@ -93,7 +93,7 @@ model Issue {
   list         Lists?   @relation(fields: [list_id], references: [id])
 
   // Relations
-  Timesheet   Timesheet[]
+  Timesheets  Timesheet[]
   Comments    Comment[]
   Attachments Attachment[]
 }
@@ -148,15 +148,17 @@ model User_Project {
 model Timesheet {
   id              Int      @id @default(autoincrement())
   description     String?
+  startTime       DateTime
+  endTime         DateTime
   time_in_minutes Int
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
   // Relations
-  user_id    Int
-  user       User    @relation(fields: [user_id], references: [id])
-  project_id Int
-  project    Project @relation(fields: [project_id], references: [id])
-  issue_id   Int
-  issue      Issue   @relation(fields: [issue_id], references: [id])
+  user_id    Int?
+  user       User?    @relation(fields: [user_id], references: [id])
+  project_id Int?
+  project    Project? @relation(fields: [project_id], references: [id])
+  issue_id   Int?
+  issue      Issue?   @relation(fields: [issue_id], references: [id])
 }
