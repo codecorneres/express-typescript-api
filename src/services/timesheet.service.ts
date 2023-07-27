@@ -12,26 +12,12 @@ export const createTimesheet = async (input: any) => {
     endTime = new Date(endTime)
     // const description = input.description
 
-    console.log(user_id, startTime, "fgvtgb", endTime);
-
-    if (!user_id) {
-        throw new HttpException(422, { errors: { user_id: ["can't be blank"] } });
-    }
-    if (!startTime) {
-        throw new HttpException(422, { errors: { startTime: ["can't be blank"] } });
-    }
-    if (!endTime) {
-        throw new HttpException(422, { errors: { endTime: ["can't be blank"] } });
-    }
-    if (!project_id) {
-        throw new HttpException(422, { errors: { project_id: ["can't be blank"] } });
-    }
-    if (!issue_id) {
-        throw new HttpException(422, { errors: { issue_id: ["can't be blank"] } });
-    }
-    if (!time_in_minutes) {
-        throw new HttpException(422, { errors: { time_in_minutes: ["can't be blank"] } });
-    }
+    const neededFields = [user_id, startTime, endTime, project_id, issue_id, time_in_minutes,]
+    neededFields.forEach((field) => {
+        if (!field) {
+            throw new HttpException(422, { errors: { field: ["can't be blank"] } });
+        }
+    })
 
     const timesheet = await prisma.timesheet.create({
         data: {
@@ -51,8 +37,9 @@ export const createTimesheet = async (input: any) => {
     return { ...timesheet };
 };
 
-export const getAllTimesheetsForUser = async () => {
+export const getAllTimesheetsForIssue = async () => {
     const timesheets = await prisma.timesheet.findMany({
+
         select: {
             // description: true,
             time_in_minutes: true,

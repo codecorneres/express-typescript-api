@@ -3,7 +3,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { Router } from 'express';
 import auth from '../utils/auth';
-import { getAllTimesheetsForUser, getTimesheetById, updateTimesheet, deleteTimesheet, createTimesheet } from '../services/timesheet.service';
+import { getAllTimesheetsForIssue, getTimesheetById, updateTimesheet, deleteTimesheet, createTimesheet } from '../services/timesheet.service';
 
 const timesheetRouter = express.Router();
 
@@ -21,9 +21,9 @@ timesheetRouter.post('/timesheet', async (req: Request, res: Response, next: Nex
 timesheetRouter.get('/timesheets/:id', async (req: Request, res: Response, next: NextFunction) => {
     const id = Number(req.params.id)
     try {
-        const timesheets = await getAllTimesheetsForUser();
+        const timesheets = await getAllTimesheetsForIssue();
         const userTimesheets = timesheets.filter((timesheet, index) => {
-            return timesheet.user_id === id
+            return timesheet.issue_id === id
         })
         res.json(userTimesheets);
     } catch (error) {
@@ -32,7 +32,7 @@ timesheetRouter.get('/timesheets/:id', async (req: Request, res: Response, next:
 });
 
 // Get timesheet by id
-timesheetRouter.get('/timesheets/:id', async (req: Request, res: Response, next: NextFunction) => {
+timesheetRouter.get('/timesheet/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const timesheet = await getTimesheetById(Number(req.params.id));
         res.json(timesheet);
